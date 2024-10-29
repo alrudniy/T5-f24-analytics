@@ -8,8 +8,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'csci400_random_string_as_secret_key'
 
 # Configure the database URI for SQLAlchemy
-username = 't1'  # Replace with actual username
-password = 'YWQQEg1QwgVTc40K'  # Replace with actual password
+username = 't5'  # Replace with actual username
+password = 'SjBqiLwyZu0kMlfm'  # Replace with actual password
 engine = sqlalchemy.create_engine(f"mariadb+mariadbconnector://{username}:{password}@34.125.69.91/f24_housing_db")
 
 Base = declarative_base()
@@ -54,7 +54,7 @@ def login():
         user = db_session.query(User).filter_by(username=username).first()
         if user and check_password_hash(user.password, password):
             login_user(user)  # Log in the user with Flask-Login
-            return redirect(url_for('pick_a_path'))
+            return redirect(url_for('home'))
         else:
             flash('Invalid username or password', 'error')
     return render_template('login.html')
@@ -90,6 +90,16 @@ def scenario2():
 @login_required
 def article1():
     return render_template('article1.html')
+
+@app.route('/home')
+@login_required
+def home():
+    return render_template('home.html')
+
+@app.route('/tenantlist')
+@login_required
+def tenantlist():
+    return render_template('tenantlist.html')
 
 @app.route('/logout')
 @login_required
