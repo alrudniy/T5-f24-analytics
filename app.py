@@ -71,26 +71,6 @@ def create_account():
         return redirect(url_for('login'))
     return render_template('create_account.html')
 
-@app.route('/pick_a_path')
-@login_required  # Ensure this route is only accessible to logged-in users
-def pick_a_path():
-    return render_template('pick_a_path.html')
-
-@app.route('/scenario1')
-@login_required
-def scenario1():
-    return render_template('scenario1.html')
-
-@app.route('/scenario2')
-@login_required
-def scenario2():
-    return render_template('scenario2.html')
-
-@app.route('/article1')
-@login_required
-def article1():
-    return render_template('article1.html')
-
 @app.route('/home')
 @login_required
 def home():
@@ -99,7 +79,14 @@ def home():
 @app.route('/tenantlist')
 @login_required
 def tenantlist():
-    return render_template('tenantlist.html')
+    users = db_session.query(User).all()
+    ##print(users)
+    return render_template('tenantlist.html', users=users)
+
+@app.route('/propertylist')
+@login_required
+def propertylist():
+    return render_template('propertylist.html')
 
 @app.route('/logout')
 @login_required
