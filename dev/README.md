@@ -11,5 +11,5 @@ docker run --name staff-analytics-mysql -e MYSQL_ROOT_PASSWORD=123456 -p 33007:3
 On windows
 
 ```powershell
-docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=123456 -p 33007:3306 -v ${PWD}/db-data:/var/lib/mysql -d mysql:latest
+docker run --name staff-analytics-mysql -e MYSQL_ROOT_PASSWORD=123456 -p 33007:3306 -v ${PWD}/db-data:/var/lib/mysql -d mysql:latest
 ```
