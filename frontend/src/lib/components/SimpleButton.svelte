@@ -8,3 +8,10 @@
 <button class="bg-black text-white text-xl p-2 rounded-lg {className}" {...restProps}>
 	{@render children?.()}
 </button>
+
+<style>
+	button:disabled {
+		cursor: not-allowed;
+		@apply bg-gray;
+	}
+</style>

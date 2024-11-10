@@ -35,7 +35,7 @@
 	</section>
 
 	<section>
-		<a href="/signin" class="underline text-2xl"> Back to Login </a>
+		<a href="/account/signout" class="underline text-2xl"> Sign Out </a>
 	</section>
 </main>
 

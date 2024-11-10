@@ -12,21 +12,23 @@
 		"lint": "prettier --check ."
 	},
 	"devDependencies": {
-		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/kit": "^2.8.0",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
 		"@unocss/preset-uno": "^0.63.6",
 		"@unocss/svelte-scoped": "^0.63.6",
 		"@unocss/transformer-directives": "^0.63.6",
-		"prettier": "^3.3.2",
-		"prettier-plugin-svelte": "^3.2.6",
-		"svelte": "^5.0.0",
-		"svelte-check": "^4.0.0",
-		"typescript": "^5.0.0",
+		"prettier": "^3.3.3",
+		"prettier-plugin-svelte": "^3.2.7",
+		"svelte": "^5.1.13",
+		"svelte-check": "^4.0.6",
+		"typescript": "^5.6.3",
 		"unocss": "^0.63.6",
-		"vite": "^5.0.3"
+		"vite": "^5.4.10"
 	},
 	"dependencies": {
 		"@sveltejs/adapter-static": "^3.0.6",
-		"lucide-svelte": "^0.454.0"
+		"lucide-svelte": "^0.454.0",
+		"openapi-fetch": "^0.13.0",
+		"svelte-sonner": "^0.3.28"
 	}
 }
