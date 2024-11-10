@@ -3,5 +3,14 @@ import UnoCSS from '@unocss/svelte-scoped/vite'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-	plugins: [UnoCSS(), sveltekit()]
+	plugins: [UnoCSS(), sveltekit()],
+	server: {
+		proxy: {
+			'/api': {
+				target: 'http://localhost:3000',
+				changeOrigin: true,
+				rewrite: (path) => path.replace(/^\/api/, '')
+			}
+		}
+	}
 })
