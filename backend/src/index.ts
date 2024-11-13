@@ -6,6 +6,7 @@ import { signinHandler, signinRoute } from "./route/auth/signin"
 import { registerHandler, registerRoute } from "./route/auth/register"
 import { signoutHandler, signoutRoute } from "./route/account/signout"
 import { listStaffRoute, listUnverifedStaffHandler } from "./route/verify/listStaff"
+import { listTenantHandler, listTenantRoute } from "./route/tenants/listTenants"
 
 export type Env = {
 	Variables: {
@@ -40,8 +41,8 @@ app.use("*", async (c, next) => {
 app.openapi(signinRoute, signinHandler)
 app.openapi(registerRoute, registerHandler)
 app.openapi(signoutRoute, signoutHandler)
-
 app.openapi(listStaffRoute, listUnverifedStaffHandler)
+app.openapi(listTenantRoute, listTenantHandler)
 
 if (process.env.NODE_ENV !== "production") {
 	app.doc31("/doc.json", {

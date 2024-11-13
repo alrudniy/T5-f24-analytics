@@ -4,15 +4,6 @@
   import CardContent from '$lib/components/card/CardContent.svelte'
   import CardHeader from '$lib/components/card/CardHeader.svelte'
 
-  type Tenant = {
-    id: number;
-    username: string;
-    firstName: string;
-    lastName?: string;
-    dateJoined: string;
-    active: boolean;
-  }
-
   // Accessing props using $props() to get tenants data
   const { data } = $props();
 
@@ -64,7 +55,7 @@
           <th class="p-2">ID</th>
           <th class="p-2">Username</th>
           <th class="p-2">Name</th>
-          <th class="p-2">Date Joined</th>
+          <th class="p-2">Password</th>
           <th class="p-2">Status</th>
         </tr>
       </thead>
@@ -73,8 +64,8 @@
           <tr>
             <td class="p-2">{tenant.id}</td>
             <td class="p-2">{tenant.username}</td>
-            <td class="p-2">{tenant.firstName} {tenant.lastName || 'N/A'}</td>
-            <td class="p-2">{tenant.dateJoined}</td>
+            <td class="p-2">{tenant.firstname} {tenant.lastname || 'N/A'}</td>
+            <td class="p-2">{tenant.password.slice(0,32)} ...</td>
             <td class="p-2">
               <Badge variant={tenant.active ? 'default' : 'secondary'}>
                 {tenant.active ? 'Active' : 'Inactive'}
