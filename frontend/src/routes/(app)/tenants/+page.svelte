@@ -1,34 +1,89 @@
 <script lang="ts">
   import Badge from '$lib/components/Badge.svelte'
+  import Card from '$lib/components/card/Card.svelte'
+  import CardContent from '$lib/components/card/CardContent.svelte'
+  import CardHeader from '$lib/components/card/CardHeader.svelte'
 
-  let { tenants } = $props()
-  console.log(tenants)
+  type Tenant = {
+    id: number;
+    username: string;
+    firstName: string;
+    lastName?: string;
+    dateJoined: string;
+    active: boolean;
+  }
 
-  const tenantList = $derived.by(() => tenants)
+  // Accessing props using $props() to get tenants data
+  const { data } = $props();
+
+  // Filter states: all, active, inactive
+  type FilterType = 'all' | 'active' | 'inactive';
+  let filter = $state<FilterType>('all');
+
+  // Derived state: filter tenants based on status
+  const filteredTenants = $derived.by(() => {
+    if (filter === 'all') {
+      return data.tenants;
+    }
+    return data.tenants.filter((tenant) => tenant.active === (filter === 'active'));
+  });
+
+
+  // Function to change filter
+  function changeFilter(newFilter: FilterType) {
+    filter = newFilter;
+  }
 </script>
 
 <main class="w-full max-w-5xl mx-auto p-4 flex flex-col gap-2">
   <section class="flex w-full justify-between items-end">
-    <h1 class="text-3xl">Tenants</h1>
-
+    <h1 class="text-3xl">Tenant List</h1>
     <a href="/" class="underline">Back</a>
   </section>
 
+  <section>
+    {#snippet filterButton(setting: FilterType)}
+      <button
+        class="capitalize filter-btn"
+        data-selected={setting == filter}
+        onclick={() => changeFilter(setting)}
+      >
+        {setting}
+      </button>
+    {/snippet}
+
+    {@render filterButton('all')}
+    {@render filterButton('active')}
+    {@render filterButton('inactive')}
+  </section>
+
   <div class="scroll-container py-2">
-    <ul class="tenant-list">
-      {#each tenantList as tenant (tenant.id)}
-        <li class="tenant-item {tenant.active ? 'active' : 'inactive'}">
-          <div class="tenant-info">
-            <h4>{tenant.firstName} {tenant.lastName ?? ''} ({tenant.username})</h4>
-            <small>Joined: {tenant.dateJoined}</small>
-          </div>
-          <!-- Pass the status as content (children) for Badge -->
-          <Badge class="badge" variant={tenant.active ? 'default' : 'secondary'}>
-            {tenant.active ? 'Active' : 'Inactive'}
-          </Badge>
-        </li>
-      {/each}
-    </ul>
+    <table class="min-w-full border-collapse">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="p-2">ID</th>
+          <th class="p-2">Username</th>
+          <th class="p-2">Name</th>
+          <th class="p-2">Date Joined</th>
+          <th class="p-2">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each filteredTenants as tenant (tenant.id)}
+          <tr>
+            <td class="p-2">{tenant.id}</td>
+            <td class="p-2">{tenant.username}</td>
+            <td class="p-2">{tenant.firstName} {tenant.lastName || 'N/A'}</td>
+            <td class="p-2">{tenant.dateJoined}</td>
+            <td class="p-2">
+              <Badge variant={tenant.active ? 'default' : 'secondary'}>
+                {tenant.active ? 'Active' : 'Inactive'}
+              </Badge>
+            </td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
   </div>
 </main>
 
@@ -44,41 +99,43 @@
     flex-grow: 1;
   }
 
-  .tenant-list {
-    padding: 0;
-    margin: 0;
-    list-style: none;
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
   }
 
-  .tenant-item {
-    padding: 1rem;
-    margin-bottom: 1rem;
+  th, td {
+    padding: 10px;
+    text-align: left;
     border: 1px solid #ddd;
-    border-radius: 8px;
+  }
+
+  th {
+    background-color: #f4f4f4;
+  }
+
+  tr:nth-child(even) {
     background-color: #f9f9f9;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
   }
 
-  .tenant-item.active {
-    background-color: #e0ffe0; /* Light green for active tenants */
+  .filter-btn {
+    padding: 8px 12px;
+    font-size: 1rem;
+    background-color: white;
+    color: black;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 8px;
   }
 
-  .tenant-item.inactive {
-    background-color: #ffe0e0; /* Light red for inactive tenants */
+  .filter-btn:hover {
+    background-color: #f0f0f0;
   }
 
-  .tenant-info {
-    flex-grow: 1;
-  }
-
-  .tenant-info h4 {
-    margin: 0;
-    font-size: 1.2rem;
-  }
-
-  .tenant-info small {
-    color: #777;
+  .filter-btn[data-selected='true'] {
+    background-color: #333;
+    color: white;
   }
 </style>
