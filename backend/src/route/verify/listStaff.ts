@@ -1,6 +1,6 @@
 import { RouteHandler, createRoute, z } from "@hono/zod-openapi";
 import { Env } from "../..";
-import { staffs } from "../../db/schema";
+import { staffs } from "../../db/schema/staff";
 import { eq } from "drizzle-orm";
 
 
