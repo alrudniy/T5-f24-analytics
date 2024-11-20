@@ -2,16 +2,19 @@
 	import Badge from '$lib/components/Badge.svelte';
 	import Card from '$lib/components/card/Card.svelte';
 	import CardHeader from '$lib/components/card/CardHeader.svelte';
+	import SimpleButton from '$lib/components/SimpleButton.svelte'
 
 	let { data } = $props();
 
 	type PropertyType = 'apartment' | 'house' | 'studio';
 
+	let showVerified = $state(false)
+
 	let filter = $state<PropertyType>('apartment');
 
 	const properties = $derived.by(() => {
 		if (filter === 'apartment') {
-			return data.properties.filter((p) => p.type === 'apartment');
+			return data.properties.filter((p) => p.type === 'apartment' && p.verified == showVerified);
 		}
 		return data.properties.filter((p) => p.type === filter);
 	});
@@ -23,6 +26,16 @@
 		<a href="/" class="underline">Back</a>
 	</section>
 
+	<div>
+		<SimpleButton class="bg-blue-500" onclick={() => showVerified = !showVerified}>
+			{#if showVerified}
+			Show Unverified
+			{:else}
+			Show Verified
+			{/if}
+			</SimpleButton>
+		
+	</div>
 	<section>
 		{#snippet filterButton(type: PropertyType)}
 			<button
