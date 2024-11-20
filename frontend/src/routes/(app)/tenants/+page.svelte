@@ -7,23 +7,27 @@
   // Accessing props using $props() to get tenants data
   const { data } = $props();
 
-  // Filter states: all, active, inactive
-  type FilterType = 'all' | 'active' | 'inactive';
-  let filter = $state<FilterType>('all');
+  // Declare a search query reactive state
+  let searchQuery = $state('');
 
-  // Derived state: filter tenants based on status
+  // Derived state: filter tenants based on status and search query (by name)
   const filteredTenants = $derived.by(() => {
-    if (filter === 'all') {
-      return data.tenants;
+    let filtered = data.tenants;
+
+    // Apply search filtering based on query (name or username)
+    if (searchQuery) {
+      filtered = filtered.filter((tenant) => {
+        const fullName = (tenant.firstname + ' ' + tenant.lastname).toLowerCase();
+        const username = tenant.username.toLowerCase();
+        return (
+          fullName.includes(searchQuery.toLowerCase()) || 
+          username.includes(searchQuery.toLowerCase())
+        );
+      });
     }
-    return data.tenants.filter((tenant) => tenant.active === (filter === 'active'));
+
+    return filtered;
   });
-
-
-  // Function to change filter
-  function changeFilter(newFilter: FilterType) {
-    filter = newFilter;
-  }
 </script>
 
 <main class="w-full max-w-5xl mx-auto p-4 flex flex-col gap-2">
@@ -32,41 +36,37 @@
     <a href="/" class="underline">Back</a>
   </section>
 
-  <section>
-    {#snippet filterButton(setting: FilterType)}
-      <button
-        class="capitalize filter-btn"
-        data-selected={setting == filter}
-        onclick={() => changeFilter(setting)}
-      >
-        {setting}
-      </button>
-    {/snippet}
+  <!-- Search bar for filtering tenants by name or username -->
+  <input
+    type="text"
+    id="search"
+    class="form-control mb-3"
+    placeholder="Search by name or username..."
+    bind:value={searchQuery} 
+  />
 
-    {@render filterButton('all')}
-    {@render filterButton('active')}
-    {@render filterButton('inactive')}
-  </section>
-
+  <!-- Tenants table -->
   <div class="scroll-container py-2">
-    <table class="min-w-full border-collapse">
+    <table class="min-w-full border-collapse" id="userTable">
       <thead>
         <tr class="bg-gray-100">
-          <th class="p-2">ID</th>
-          <th class="p-2">Username</th>
-          <th class="p-2">Name</th>
-          <th class="p-2">Password</th>
-          <th class="p-2">Status</th>
+          <th class="p-3">ID</th>
+          <th class="p-3">Username</th>
+          <th class="p-3">Name</th>
+          <th class="p-3">Phone</th>
+          <th class="p-3">Email</th>
+          <th class="p-3">Status</th>
         </tr>
       </thead>
       <tbody>
         {#each filteredTenants as tenant (tenant.id)}
           <tr>
-            <td class="p-2">{tenant.id}</td>
-            <td class="p-2">{tenant.username}</td>
-            <td class="p-2">{tenant.firstname} {tenant.lastname || 'N/A'}</td>
-            <td class="p-2">{tenant.password.slice(0,32)} ...</td>
-            <td class="p-2">
+            <td class="p-3">{tenant.id}</td>
+            <td class="p-3">{tenant.username}</td>
+            <td class="p-3">{tenant.firstname} {tenant.lastname || 'N/A'}</td>
+            <td class="p-3">{tenant.phone}</td>
+            <td class="p-3">{tenant.email}</td>
+            <td class="p-3">
               <Badge variant={tenant.active ? 'default' : 'secondary'}>
                 {tenant.active ? 'Active' : 'Inactive'}
               </Badge>
@@ -90,14 +90,27 @@
     flex-grow: 1;
   }
 
+  /* Style the search bar to make it bigger */
+  input.form-control {
+    width: 100%;
+    padding: 10px 14px;  /* Increase padding */
+    font-size: 1rem;  /* Larger font size */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;  /* Ensures padding doesn't affect width */
+    margin-top: 20px;
+    margin-bottom: 0px; /* Add space between search bar and table */
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    min-width: 1000px; /* Set a minimum width for the table */
   }
 
   th, td {
-    padding: 10px;
+    padding: 12px; /* Increased padding */
     text-align: left;
     border: 1px solid #ddd;
   }
@@ -108,25 +121,5 @@
 
   tr:nth-child(even) {
     background-color: #f9f9f9;
-  }
-
-  .filter-btn {
-    padding: 8px 12px;
-    font-size: 1rem;
-    background-color: white;
-    color: black;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 8px;
-  }
-
-  .filter-btn:hover {
-    background-color: #f0f0f0;
-  }
-
-  .filter-btn[data-selected='true'] {
-    background-color: #333;
-    color: white;
   }
 </style>

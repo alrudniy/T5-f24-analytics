@@ -240,10 +240,11 @@ export interface components {
         TenantsInfo: {
             id: number;
             username: string;
-            password: string;
-            active: boolean;
             firstname: string;
             lastname: string;
+            active: boolean | null;
+            phone: string | null;
+            email: string | null;
         };
     };
     responses: never;

@@ -1,16 +1,17 @@
 import { RouteHandler, createRoute, z } from "@hono/zod-openapi";
 import { Env } from "../..";
-import { users } from "../../db/schema/tenants";
+import { user } from "../../db/schema/tenants";
 import { eq } from "drizzle-orm";
 
 
 const ListTenantResponse = z.array(z.object({
     id: z.number(),
     username: z.string(),
-    password: z.string(),
-    active: z.boolean(),
     firstname: z.string(),
     lastname: z.string(),
+    active: z.boolean().nullable(),
+    phone: z.string().nullable(),
+    email: z.string().nullable(),
 }).openapi("TenantsInfo"))
 
 
@@ -33,14 +34,15 @@ export const listTenantRoute = createRoute({
 export const listTenantHandler : RouteHandler<typeof listTenantRoute, Env> = async (c) => {
     const db = c.var.db
 
-    const Tenants = await db.query.users.findMany({
+    const Tenants = await db.query.user.findMany({
         columns: {
             id: true,
             username: true,
-            password: true,
-            active: true, 
             firstname: true,
             lastname: true,
+            active: true,
+            phone: true,
+            email: true,
         },
     })
 
