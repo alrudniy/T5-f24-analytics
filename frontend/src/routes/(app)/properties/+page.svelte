@@ -14,9 +14,9 @@
 
 	const properties = $derived.by(() => {
 		if (filter === 'apartment') {
-			return data.properties.filter((p) => p.type === 'apartment' && p.verified == showVerified);
+			return data.properties.filter((p) => p.type === 'apartment' && (showVerified ? true : !p.verified));
 		}
-		return data.properties.filter((p) => p.type === filter);
+		return data.properties.filter((p) => p.type === filter && (showVerified ? true : !p.verified));
 	});
 </script>
 
