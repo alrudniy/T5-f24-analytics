@@ -1,5 +1,5 @@
-<script lang="ts">
-	import CardHeader from '$lib/components/card/CardHeader.svelte'
+non<script lang="ts">
+        import CardHeader from '$lib/components/card/CardHeader.svelte'
     import Chart, { type ChartProps } from '@sveltejs/kit-chartjs';
 
     let chartData = {
