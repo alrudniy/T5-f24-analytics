@@ -57,7 +57,7 @@
         <Card>
             <CardHeader title="Tenant Bedroom Preferences" />
             <CardContent>
-                <Chart type="bar" {data} {options} />
+                <Chart type="bar" data={chartData} options={chartOptions} />
             </CardContent>
         </Card>
     </div>
@@ -72,28 +72,5 @@
                 </ol>
             </CardContent>
         </Card>
-    </div>
-</div>
-<div class="flex flex-row justify-center items-start gap-8 p-4">
-    <div class="w-1/2">
-            <Card>
-                    <CardHeader title="Tenant Bedroom Preferences" />
-                    <CardContent>
-                            <Chart type="bar" {data} {options} />
-                    </CardContent>
-            </Card>
-    </div>
-    <div class="w-1/2">
-            <Card>
-                    <CardHeader title="Most Desired Amenities" />
-                    <CardContent>
-                            <ol class="list-decimal pl-6">
-                                    {#each desiredAmenities as amenity}
-                                            <li>{amenity.name} ({amenity.votes}
-votes)</li>
-                                    {/each}
-                            </ol>
-                    </CardContent>
-            </Card>
     </div>
 </div>
