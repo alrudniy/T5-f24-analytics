@@ -63,6 +63,20 @@
 									<p class="text-lg">{property.location}</p>
 									<p class="text-sm text-muted-foreground">Landlord: {property.landlord}</p>
 								</div>
+								</div>
+								<div>
+									<button on:click={() => {
+										property.verified = !property.verified;
+										// TODO: Make API call to update verification status
+										console.log("Toggled verification for property:", property.id);
+									}}>
+										{#if property.verified}
+											Unverify
+										{:else}
+											Verify
+										{/if}
+									</button>
+								</div>
 							</div>
 						</CardHeader>
 					</Card>

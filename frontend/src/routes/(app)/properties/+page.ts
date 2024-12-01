@@ -10,7 +10,7 @@ type Property = {
 
 export const load: PageLoad = async () => {
 	return {
-		properties: placeholderProperties.filter((property) => property.verified), // Only include verified properties
+		properties: placeholderProperties,
 	};
 };
 
@@ -44,4 +44,18 @@ const placeholderProperties: Property[] = [
 		type: 'house',
 		verified: true,
 	},
+    {
+        id: 5,
+        landlord: 'Unverified Landlord 1',
+        location: '777 Unverified St, Placeholder',
+        type: 'apartment',
+        verified: false,
+    },
+    {
+        id: 6,
+        landlord: 'Unverified Landlord 2',
+        location: '888 Unverified Ave, Placeholder',
+        type: 'house',
+        verified: false,
+    },
 ];
