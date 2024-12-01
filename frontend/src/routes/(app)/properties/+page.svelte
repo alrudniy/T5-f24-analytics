@@ -57,8 +57,6 @@
 								<div>
 									<p class="text-lg">{property.location}</p>
 									<p class="text-sm text-muted-foreground">Landlord: {property.landlord}</p>
-								</div>
-								</div>
 								<div>
 									<button on:click={() => {
 										const index = data.properties.findIndex(p => p.id === property.id);
