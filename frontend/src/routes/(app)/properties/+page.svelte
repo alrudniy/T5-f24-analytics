@@ -2,21 +2,20 @@
 	import Badge from '$lib/components/Badge.svelte';
 	import Card from '$lib/components/card/Card.svelte';
 	import CardHeader from '$lib/components/card/CardHeader.svelte';
-	import SimpleButton from '$lib/components/SimpleButton.svelte'
+	import SimpleButton from '$lib/components/SimpleButton.svelte';
 
-	let { data } = $props();
+	export let data;
 
 	type PropertyType = 'apartment' | 'house' | 'studio';
 
-	let showVerified = $state(false)
+	const showVerified = $state(false);
+	const set_showVerified = showVerified[1];
 
-	let filter = $state<PropertyType>('apartment');
+	const filter = $state<PropertyType>('apartment');
+	const set_filter = filter[1];
 
-	const properties = $derived.by(() => {
-		if (filter === 'apartment') {
-			return data.properties.filter((p) => p.type === 'apartment' && (showVerified ? true : !p.verified));
-		}
-		return data.properties.filter((p) => p.type === filter && (showVerified ? true : !p.verified));
+	const properties = $derived.by([filter, showVerified], ([$filter, $showVerified]) => {
+		return data.properties.filter((p) => p.type === $filter && ($showVerified ? true : !p.verified));
 	});
 </script>
 
@@ -27,29 +26,25 @@
 	</section>
 
 	<div>
-		<SimpleButton class="bg-blue-500" onclick={() => showVerified = !showVerified}>
+		<SimpleButton class="bg-blue-500" onclick={() => set_showVerified(!showVerified)}>
 			{#if showVerified}
-			Show Unverified
+				Show Unverified
 			{:else}
-			Show Verified
+				Show Verified
 			{/if}
-			</SimpleButton>
-		
+		</SimpleButton>
 	</div>
+
 	<section>
 		{#snippet filterButton(type: PropertyType)}
-			<button
-				class="capitalize filter-btn"
-				data-selected={type === filter}
-				onclick={() => (filter = type)}
-			>
+			<button class="capitalize filter-btn" data-selected={type === filter} onclick={() => set_filter(type)}>
 				{type}
 			</button>
 		{/snippet}
 
-		{@render filterButton('apartment')}
-		{@render filterButton('house')}
-		{@render filterButton('studio')}
+		{@html filterButton('apartment')}
+		{@html filterButton('house')}
+		{@html filterButton('studio')}
 	</section>
 
 	<div class="scroll-container py-2">
