@@ -66,9 +66,18 @@
 								</div>
 								<div>
 									<button on:click={() => {
-										property.verified = !property.verified;
-										// TODO: Make API call to update verification status
-										console.log("Toggled verification for property:", property.id);
+										const index = data.properties.findIndex(p => p.id === property.id);
+										if (index !== -1) {
+											// Create a new array with the updated property. This triggers Svelte's reactivity.
+											const updatedProperties = [
+												...data.properties.slice(0, index),
+												{...property, verified: !property.verified},
+												...data.properties.slice(index + 1)
+											];
+											data.properties = updatedProperties;
+											// TODO: Make API call to update verification status
+											console.log("Toggled verification for property:", property.id, data.properties);
+										}
 									}}>
 										{#if property.verified}
 											Unverify
