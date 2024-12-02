@@ -18,12 +18,14 @@
     type PropertyType = Property['type'];
 
 
+    import { derived } from 'svelte/store';
+
     let showVerified = false;
 
     let filter: PropertyType = 'apartment';
 
-    const properties = $derived.by(() => {
-        return data.properties.filter((p) => p.type === filter && (showVerified || !p.verified));
+    const properties = derived(data, ($data) => {
+        return $data.properties.filter((p) => p.type === filter && (showVerified || !p.verified));
     });
 </script>
 
@@ -65,7 +67,7 @@
 
     <div class="scroll-container py-2">
         <ol class="flex flex-col gap-6 property-list">
-            {#each properties as property (property.id)}
+            {#each $properties as property (property.id)}
                 <li>
                     <Card>
                         <CardHeader>
