@@ -73,7 +73,7 @@
                                     <p class="text-sm text-muted-foreground">Landlord: {property.landlord}</p>
                                 </div>
                                 <div>
-                                    <button on:click={() => {
+                                    <SimpleButton on:click={() => {
                                         const index = data.properties.findIndex(p => p.id === property.id);
                                         if (index !== -1) {
                                             const updatedProperties = [
@@ -91,7 +91,7 @@
                                         {:else}
                                             Verify
                                         {/if}
-                                    </button>
+                                    </SimpleButton>
                                 </div>
                             </div>
                         </CardHeader>
