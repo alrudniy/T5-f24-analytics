@@ -2,13 +2,20 @@
     import Badge from '$lib/components/Badge.svelte';
     import Card from '$lib/components/card/Card.svelte';
     import CardHeader from '$lib/components/card/CardHeader.svelte';
-    import SimpleButton from '$lib/components/SimpleButton.svelte'
+    import SimpleButton from '$lib/components/SimpleButton.svelte';
+
+    export let  { properties: Property[] };
+
+    interface Property {
+        id: number;
+        landlord: string;
+        location: string;
+        type: 'apartment' | 'house' | 'studio';
+        verified: boolean;
+    }
 
 
-    let { data } = $props();
-
-
-    type PropertyType = 'apartment' | 'house' | 'studio';
+    type PropertyType = Property['type'];
 
 
     let showVerified = false;
