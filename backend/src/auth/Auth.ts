@@ -36,7 +36,6 @@ export class Auth {
 			.innerJoin(staffs, eq(staffSessions.staffID, staffs.staffID))
 			.where(eq(staffSessions.sessionID, sessionId))
 
-
 		if (result.length < 1) {
 			return { session: null, staff: null }
 		}

@@ -5,13 +5,21 @@ import { createDatabase, type DatabaseType } from "./db"
 import { signinHandler, signinRoute } from "./route/auth/signin"
 import { registerHandler, registerRoute } from "./route/auth/register"
 import { signoutHandler, signoutRoute } from "./route/account/signout"
-import { listStaffRoute, listUnverifedStaffHandler } from "./route/verify/listStaff"
+import {
+	listStaffRoute,
+	listUnverifedStaffHandler,
+} from "./route/verify/listStaff"
 import { listTenantHandler, listTenantRoute } from "./route/tenants/listTenants"
+import { Staff, StaffSession } from "./db/schema"
+import { verifyMiddleware } from "./middleware/verifyMiddleware"
 
 export type Env = {
 	Variables: {
 		auth: Auth
 		db: DatabaseType
+
+		session: StaffSession
+		staff: Staff
 	}
 }
 
@@ -40,8 +48,14 @@ app.use("*", async (c, next) => {
 // handlers
 app.openapi(signinRoute, signinHandler)
 app.openapi(registerRoute, registerHandler)
+
+app.use("/account/*", verifyMiddleware)
 app.openapi(signoutRoute, signoutHandler)
+
+app.use("/verify/*", verifyMiddleware)
 app.openapi(listStaffRoute, listUnverifedStaffHandler)
+
+app.use("/tenants/*", verifyMiddleware)
 app.openapi(listTenantRoute, listTenantHandler)
 
 if (process.env.NODE_ENV !== "production") {
