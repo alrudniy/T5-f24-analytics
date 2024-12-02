@@ -29,4 +29,6 @@ export const verifyMiddleware = createMiddleware<Env>(async (c, next) => {
 
 	c.set("session", session)
 	c.set("staff", staff)
+
+	await next()
 })
