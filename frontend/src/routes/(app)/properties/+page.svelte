@@ -35,27 +35,6 @@
 			{/if}
 		</SimpleButton>
 	</div>
-
-	<div>
-		<SimpleButton class="bg-blue-500" onclick={() => (showVerified = !showVerified)}>
-			{#if showVerified}
-				Show Unverified
-			{:else}
-				Show Verified
-			{/if}
-		</SimpleButton>
-	</div>
-
-	<div>
-		<SimpleButton class="bg-blue-500" onclick={() => showVerified = !showVerified}>
-			{#if showVerified}
-			Show Unverified
-			{:else}
-			Show Verified
-			{/if}
-			</SimpleButton>
-		
-	</div>
 	<section>
 		{#snippet filterButton(type: PropertyType)}
 			<button
