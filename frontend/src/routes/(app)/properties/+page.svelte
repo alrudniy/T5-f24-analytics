@@ -11,18 +11,12 @@
     type PropertyType = 'apartment' | 'house' | 'studio';
 
 
-    let showVerified = $state(false)
+    let showVerified = false;
+    $: console.log("showVerified changed:", showVerified);
 
+    let filter: PropertyType = 'apartment';
 
-    let filter = $state<PropertyType>('apartment');
-
-
-    const properties = $derived.by(() => {
-        if (filter === 'apartment') {
-            return data.properties.filter((p) => p.type === 'apartment' && (showVerified ? true : !p.verified));
-        }
-        return data.properties.filter((p) => p.type === filter && (showVerified ? true : !p.verified));
-    });
+    $: properties = data.properties.filter((p) => p.type === filter && (showVerified || !p.verified));
 </script>
 
 
