@@ -12,11 +12,12 @@
 
 
     let showVerified = false;
-    $: console.log("showVerified changed:", showVerified);
 
     let filter: PropertyType = 'apartment';
 
-    $: properties = data.properties.filter((p) => p.type === filter && (showVerified || !p.verified));
+    const properties = $derived.by(() => {
+        return data.properties.filter((p) => p.type === filter && (showVerified || !p.verified));
+    });
 </script>
 
 
