@@ -76,7 +76,6 @@
                                     <button on:click={() => {
                                         const index = data.properties.findIndex(p => p.id === property.id);
                                         if (index !== -1) {
-                                            // Create a new array with the updated property. This triggers Svelte's reactivity.
                                             const updatedProperties = [
                                                 ...data.properties.slice(0, index),
                                                 {...property, verified: !property.verified},
