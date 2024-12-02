@@ -1,32 +1,21 @@
 <script lang="ts">
-    import Badge from '$lib/components/Badge.svelte';
-    import Card from '$lib/components/card/Card.svelte';
-    import CardHeader from '$lib/components/card/CardHeader.svelte';
-    import SimpleButton from '$lib/components/SimpleButton.svelte';
+	import Badge from '$lib/components/Badge.svelte';
+	import Card from '$lib/components/card/Card.svelte';
+	import CardHeader from '$lib/components/card/CardHeader.svelte';
+	import SimpleButton from '$lib/components/SimpleButton.svelte';
 
-    export let  { properties: Property[] };
+	export let properties: Property[];
 
-    interface Property {
-        id: number;
-        landlord: string;
-        location: string;
-        type: 'apartment' | 'house' | 'studio';
-        verified: boolean;
-    }
+	import type { Property } from './$types';
 
+	type PropertyType = Property['type'];
 
-    type PropertyType = Property['type'];
+	let showVerified = false;
+	let filter: PropertyType = 'apartment';
 
-
-    import { derived } from 'svelte/store';
-
-    let showVerified = false;
-
-    let filter: PropertyType = 'apartment';
-
-    const properties = derived(data, ($data) => {
-        return $data.properties.filter((p) => p.type === filter && (showVerified || !p.verified));
-    });
+	$: filteredProperties = properties.filter(
+		(p) => p.type === filter && (showVerified || !p.verified)
+	);
 </script>
 
 
@@ -67,7 +56,7 @@
 
     <div class="scroll-container py-2">
         <ol class="flex flex-col gap-6 property-list">
-            {#each $properties as property (property.id)}
+            {#each filteredProperties as property (property.id)}
                 <li>
                     <Card>
                         <CardHeader>
@@ -78,17 +67,8 @@
                                 </div>
                                 <div>
                                     <SimpleButton on:click={() => {
-                                        const index = data.properties.findIndex(p => p.id === property.id);
-                                        if (index !== -1) {
-                                            const updatedProperties = [
-                                                ...data.properties.slice(0, index),
-                                                {...property, verified: !property.verified},
-                                                ...data.properties.slice(index + 1)
-                                            ];
-                                            data.properties = updatedProperties;
-                                            // TODO: Make API call to update verification status
-                                            console.log("Toggled verification for property:", property.id, data.properties);
-                                        }
+										// TODO: Make API call to update verification status
+										console.log('Toggled verification for property:', property.id);
                                     }}>
                                         {#if property.verified}
                                             Unverify
