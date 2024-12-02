@@ -34,7 +34,7 @@
 
 
     <div>
-        <SimpleButton class="bg-blue-500" onclick={() => showVerified = !showVerified}>
+        <SimpleButton class="bg-blue-500" on:click={() => showVerified = !showVerified}>
             {#if showVerified}
             Show Unverified
             {:else}
