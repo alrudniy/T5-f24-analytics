@@ -174,6 +174,54 @@ export interface paths {
 		patch?: never
 		trace?: never
 	}
+	"/verify/staff": {
+		parameters: {
+			query?: never
+			header?: never
+			path?: never
+			cookie?: never
+		}
+		get?: never
+		put?: never
+		post: {
+			parameters: {
+				query?: never
+				header?: never
+				path?: never
+				cookie?: never
+			}
+			requestBody?: {
+				content: {
+					"application/json": components["schemas"]["VerifyStaffRequest"]
+				}
+			}
+			responses: {
+				/** @description Verify a staff member by ID */
+				204: {
+					headers: {
+						[name: string]: unknown
+					}
+					content?: never
+				}
+				/** @description Staff not found */
+				404: {
+					headers: {
+						[name: string]: unknown
+					}
+					content: {
+						"application/json": {
+							message: string
+						}
+					}
+				}
+			}
+		}
+		delete?: never
+		options?: never
+		head?: never
+		patch?: never
+		trace?: never
+	}
 	"/tenants/list": {
 		parameters: {
 			query?: never
@@ -236,6 +284,9 @@ export interface components {
 			email: string
 			firstName: string
 			lastName: string
+		}
+		VerifyStaffRequest: {
+			staffID: number
 		}
 		TenantsInfo: {
 			id: number

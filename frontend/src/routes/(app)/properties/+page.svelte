@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Badge from '$lib/components/Badge.svelte'
 	import Card from '$lib/components/card/Card.svelte'
+	import CardContent from '$lib/components/card/CardContent.svelte'
 	import CardHeader from '$lib/components/card/CardHeader.svelte'
 	import SimpleButton from '$lib/components/SimpleButton.svelte'
 	import type { PageData } from './$types'
@@ -56,7 +57,7 @@
 			{#each filteredProperties as property (property.id)}
 				<li>
 					<Card>
-						<CardHeader>
+						<CardContent>
 							<div class="flex justify-between items-start">
 								<div>
 									<p class="text-lg">{property.location}</p>
@@ -77,7 +78,7 @@
 									</SimpleButton>
 								</div>
 							</div>
-						</CardHeader>
+						</CardContent>
 					</Card>
 				</li>
 			{/each}

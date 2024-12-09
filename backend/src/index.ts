@@ -12,6 +12,10 @@ import {
 import { listTenantHandler, listTenantRoute } from "./route/tenants/listTenants"
 import { Staff, StaffSession } from "./db/schema"
 import { verifyMiddleware } from "./middleware/verifyMiddleware"
+import {
+	verifyStaffHandler,
+	verifyStaffRoute,
+} from "./route/verify/verifyStaff"
 
 export type Env = {
 	Variables: {
@@ -54,6 +58,7 @@ app.openapi(signoutRoute, signoutHandler)
 
 app.use("/verify/*", verifyMiddleware)
 app.openapi(listStaffRoute, listUnverifedStaffHandler)
+app.openapi(verifyStaffRoute, verifyStaffHandler)
 
 app.use("/tenants/*", verifyMiddleware)
 app.openapi(listTenantRoute, listTenantHandler)
