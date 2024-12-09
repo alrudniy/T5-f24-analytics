@@ -17,7 +17,13 @@
 	let filter: PropertyType = $state('apartment')
 
 	const filteredProperties = $derived.by(() => {
-		return properties.filter((p) => p.type === filter && (showVerified || !p.verified))
+		return properties.filter((p) => {
+			if (showVerified) {
+				return p.verified && p.type === filter // Show only verified properties
+			} else {
+				return !p.verified && p.type === filter // Show only unverified properties
+			}
+		})
 	})
 </script>
 
