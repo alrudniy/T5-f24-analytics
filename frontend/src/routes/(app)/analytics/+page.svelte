@@ -14,7 +14,7 @@
 		{ name: 'Central AC', count: 12 }
 	]
 
-	let allFeatures = [...bedroomPreferences, ...otherAmenities]
+	const allFeatures = [...bedroomPreferences, ...otherAmenities]
 	allFeatures.sort((a, b) => b.count - a.count)
 </script>
 

@@ -1,9 +1,13 @@
-import type { MySqlDatabase } from "drizzle-orm/mysql-core"
-import { DatabaseType } from "../db"
-import { Staff, staffs, StaffSession, staffSessions } from "../db/schema"
-import { encodeHex } from "oslo/encoding"
-import { sha256 } from "oslo/crypto"
+import type { DatabaseType } from "../db"
+import {
+	type Staff,
+	staffs,
+	type StaffSession,
+	staffSessions,
+} from "../db/schema"
 import { eq } from "drizzle-orm"
+import { encodeHexLowerCase } from "@oslojs/encoding"
+import { sha256 } from "@oslojs/crypto/sha2"
 
 export type SessionValidationResult =
 	| { session: StaffSession; staff: Staff }
@@ -17,7 +21,9 @@ export class Auth {
 	}
 
 	async createSession(token: string, staffID: number): Promise<StaffSession> {
-		const sessionId = encodeHex(await sha256(new TextEncoder().encode(token)))
+		const sessionId = encodeHexLowerCase(
+			sha256(new TextEncoder().encode(token)),
+		)
 
 		const session: StaffSession = {
 			sessionID: sessionId,
@@ -29,7 +35,9 @@ export class Auth {
 	}
 
 	async validateSessionToken(token: string): Promise<SessionValidationResult> {
-		const sessionId = encodeHex(await sha256(new TextEncoder().encode(token)))
+		const sessionId = encodeHexLowerCase(
+			sha256(new TextEncoder().encode(token)),
+		)
 		const result = await this.db
 			.select({ staff: staffs, session: staffSessions })
 			.from(staffSessions)

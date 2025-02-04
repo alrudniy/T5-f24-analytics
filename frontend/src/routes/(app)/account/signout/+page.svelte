@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation'
 	import type { PageData } from './$types'
 
-	let { data }: { data: PageData } = $props()
+	const { data }: { data: PageData } = $props()
 
 	$effect(() => {
 		localStorage.removeItem('staff_info')
